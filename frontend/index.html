@@ -46,9 +46,7 @@
             <section id="contact" data-load="index-contact.html">
         
             </section>
-            <section id="home" data-load="index-home.html">
-  
-            </section>
+            <section id="home" data-load="index-home.html"></section>
             <section id="page3" data-load="page3.html">
                 <h1>Page 3</h1>
             </section>
@@ -72,24 +70,5 @@
     <script src="./js/script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-
-  <!-- <script>
-    // Pure-SPA show/hide: no AJAX needed because content is inline.
-    $(function(){
-      if(!$.spapp) return;
-      if(!location.hash) location.hash = '#home';
-      var app = $.spapp({ defaultView:'home', templateDir:'./' });
-      ['home','services','pricing','gallery','team','contact','login','register','dashboard','profile','entities','entities-new','privacy','terms']
-        .forEach(function(v){ app.route({ view:v }); });
-      app.run();
-      // Active link highlight
-      function setActive(){
-        var h = location.hash || '#home';
-        $('.navbar .nav-link, .dropdown-item').removeClass('active');
-        $('.navbar a[href="'+h+'"]').addClass('active');
-      }
-      window.addEventListener('hashchange', setActive); setActive();
-    });
-  </script> -->
 </body>
 </html>
