@@ -1,0 +1,12 @@
+<section class="container py-5" style="max-width:860px;">
+  <h2 class="section-title h3 mb-3">New Vehicle</h2>
+  <form onsubmit="event.preventDefault(); alert('Not connected — this is a static form.');">
+    <div class="row g-3">
+      <div class="col-md-4"><label class="form-label">Plate</label><input class="form-control" required></div>
+      <div class="col-md-4"><label class="form-label">Make</label><input class="form-control" required></div>
+      <div class="col-md-4"><label class="form-label">Model</label><input class="form-control" required></div>
+      <div class="col-12"><label class="form-label">Service</label><select class="form-select"><option>Basic Wash</option><option>Interior Detail</option><option>Full Detail</option></select></div>
+      <div class="col-12"><button class="btn btn-primary">Save</button><a class="btn btn-outline-secondary ms-2" href="#entities">Cancel</a></div>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aim Detail</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css">
+ <link rel="stylesheet" href="./css/spapp.css">
+</head>
+<body>
+  <header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#home">Aim Detail</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbars"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbars">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Account</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#login">Login</a></li>
+              <li><a class="dropdown-item" href="#register">Register</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#dashboard">Dashboard</a></li>
+              <li><a class="dropdown-item" href="#profile">Profile</a></li>
+              <li><a class="dropdown-item" href="#entities">Entities</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a class="btn btn-primary btn-sm" href="#contact"><i class="bi bi-calendar-check"></i> Book now</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section id="pageContent">
+        <main id="spapp" role="main" aria-live="polite" class="container app-container">
+            <section id="contact" data-load="index-contact.html">
+        
+            </section>
+            <section id="home" data-load="index-home.html">
+  
+            </section>
+            <section id="page3" data-load="page3.html">
+                <h1>Page 3</h1>
+            </section>
+        </main>
+    </section>
+
+</main>
+
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container d-flex justify-content-between align-items-center flex-column flex-md-row gap-2">
+      <small>© <span id="year"></span> Aim Detail. All rights reserved.</small>
+      <div class="d-flex gap-3">
+        <a class="link-secondary text-decoration-none" href="#privacy">Privacy</a>
+        <a class="link-secondary text-decoration-none" href="#terms">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/jquery.spapp.min.js"></script>
+    <script src="./js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+
+  <!-- <script>
+    // Pure-SPA show/hide: no AJAX needed because content is inline.
+    $(function(){
+      if(!$.spapp) return;
+      if(!location.hash) location.hash = '#home';
+      var app = $.spapp({ defaultView:'home', templateDir:'./' });
+      ['home','services','pricing','gallery','team','contact','login','register','dashboard','profile','entities','entities-new','privacy','terms']
+        .forEach(function(v){ app.route({ view:v }); });
+      app.run();
+      // Active link highlight
+      function setActive(){
+        var h = location.hash || '#home';
+        $('.navbar .nav-link, .dropdown-item').removeClass('active');
+        $('.navbar a[href="'+h+'"]').addClass('active');
+      }
+      window.addEventListener('hashchange', setActive); setActive();
+    });
+  </script> -->
+</body>
+</html>
