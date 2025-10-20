@@ -1,0 +1,17 @@
+:root{ --primary:#0d6efd; --dark:#111; --muted:#6c757d; }
+body{ padding-top:64px; }
+.app-container{ min-height:60vh; }
+.hero{
+  background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.65)), url('../assets/blackShine.jpg') center/cover no-repeat;
+  color:#fff; border-radius:1rem; padding:6rem 2rem; box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.hero .display-5{ font-weight:800; }
+.hero .lead{ opacity:.95; }
+.section-title{ font-weight:800; letter-spacing:.5px; }
+.badge-soft{ background: rgba(13,110,253,.12); color: var(--primary); border: 1px solid rgba(13,110,253,.25); }
+.card{ border:none; border-radius:1rem; box-shadow:0 6px 24px rgba(0,0,0,.06); }
+.card .icon{ font-size:2rem; }
+.pricing .price{ font-size:2.25rem; font-weight:800; }
+.pricing .card.recommended{ outline:2px solid var(--primary); }
+.gallery img{ border-radius:.75rem; width:100%; height:240px; object-fit:cover; }
+.table-clean th{ font-weight:600; }
