@@ -12,4 +12,4 @@ class UserDao extends BaseDao {
         return $patient
     }
 
-}
+};;;;;
