@@ -7,27 +7,28 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/BaseDao.php';
 require_once __DIR__ . '/UserDao.php';
 
-
-
-$userDao = new UserDao();
-//$userDao->addUser("Emina", "Tahirovic", "test@gmail.com", "emin123");
+//$userDao = new UserDao();
+//$userDao->addUser("Emina", "Tahirovic", "tesit1@gmail.com", "emin123");
 //$users = $userDao->getUsers();
-print_r($users);
+//print_r($users);
 
 
 
-// Ako je baza prazna, ubaci jednog test korisnika
-// if (count($users) === 0) {
-//     echo "➕ Ubacujem test korisnika...\n";
-//     $userDao->insert([
-//         'name' => 'Test',
-//         'lastname' => 'User',
-//         'email' => 'test@example.com',
-//         'password' => password_hash('secret', PASSWORD_BCRYPT)
-//     ]);
-//     $users = $userDao->getAll();
-//     echo "📋 Poslije inserta korisnika u bazi: " . count($users) . "\n";
-// }
+
+
+
+//Ako je baza prazna, ubaci jednog test korisnika
+if (count($users) === 0) {
+    echo "➕ Ubacujem test korisnika...\n";
+    $userDao->insert([
+        'name' => 'Test',
+        'lastname' => 'User',
+        'email' => 'test@example.com',
+        'password' => password_hash('secret', PASSWORD_BCRYPT)
+    ]);
+    $users = $userDao->getAll();
+    echo "📋 Poslije inserta korisnika u bazi: " . count($users) . "\n";
+}
 
 // // Nađi korisnika po emailu (ako imaš metodu getByEmail)
 // if (method_exists($userDao, 'getByEmail')) {

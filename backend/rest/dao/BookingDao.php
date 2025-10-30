@@ -1,5 +1,9 @@
 <?php
-require_once 'BaseDao.php';
+require_once __DIR__ . '/BaseDao.php';
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
+
 
 class BookingDao extends BaseDao {
     protected $table;
@@ -8,20 +12,19 @@ class BookingDao extends BaseDao {
         $this->table = "bookings";
         parent::__construct($this->table, 'booking_id'); 
     }
-}
 
-     public function createBooking($user_id, $service_id, $date, $time) {
+    public function createBooking($user_id, $service_id, $date, $time) {
         $stmt = $this->connection->prepare("
             INSERT INTO " . $this->table . " (user_id, service_id, date, time, status, created_at)
             VALUES (:user_id, :service_id, :date, :time, 'pending', NOW())
         ");
-        $stmt->bindParam(':user_id', $user_id);
-        $stmt->bindParam(':service_id', $service_id);
-        $stmt->bindParam(':date', $date);
-        $stmt->bindParam(':time', $time);
-        return $stmt->execute();
-    } //creates new bookings
-    
+        return $stmt->execute([
+            ':user_id'    => $user_id,
+            ':service_id' => $service_id,
+            ':date'       => $date,
+            ':time'       => $time
+        ]);
+    }
 
     public function getUserBookings($user_id) {
         $stmt = $this->connection->prepare("
@@ -32,8 +35,38 @@ class BookingDao extends BaseDao {
         $stmt->bindParam(':user_id', $user_id);
         $stmt->execute();
         return $stmt->fetchAll();
-    } //shows bookings that are made
+    }
 
+    public function getBookingsByDate($date) {
+        $stmt = $this->connection->prepare("
+            SELECT * FROM " . $this->table . " 
+            WHERE date = :date 
+            ORDER BY time ASC
+        ");
+        $stmt->bindParam(':date', $date);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getAllBookings() {
+        $stmt = $this->connection->query("
+            SELECT * FROM " . $this->table . " 
+            ORDER BY date DESC, time DESC
+        ");
+        return $stmt->fetchAll();
+    }
+
+    public function updateStatus($booking_id, $status) {
+        $stmt = $this->connection->prepare("
+            UPDATE " . $this->table . " 
+            SET status = :status 
+            WHERE booking_id = :booking_id
+        ");
+        return $stmt->execute([
+            ':status' => $status, 
+            ':booking_id' => $booking_id
+        ]);
+    }
 
     public function deleteBooking($booking_id) {
         $stmt = $this->connection->prepare("
@@ -42,5 +75,6 @@ class BookingDao extends BaseDao {
         ");
         $stmt->bindParam(':booking_id', $booking_id);
         return $stmt->execute();
-    } // deletes booking if a customer cancels it 
+    }
+}
 ?>

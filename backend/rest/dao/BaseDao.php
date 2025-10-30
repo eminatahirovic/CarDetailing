@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../../config.php"; 
 
+
+
 class BaseDao{
     protected $connection; 
     private $table; 
@@ -45,6 +47,7 @@ class BaseDao{
         $stmt = $this->connection->prepare($sql);
         return $stmt->execute($data);
     }
+    
 
     public function update($id, $data) {
         $fields = "";
@@ -58,10 +61,13 @@ class BaseDao{
         return $stmt->execute($data);
     }
 
+
     public function delete($id) {
-        $sql = "DELETE FROM " . $this->table . " WHERE " . $this->idColumn . " = :id";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
-    }
+    $sql = "DELETE FROM `{$this->table}` WHERE `{$this->idColumn}` = :id";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    return $stmt->execute();
+}
+
+
 }
