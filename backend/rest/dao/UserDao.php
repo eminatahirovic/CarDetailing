@@ -29,6 +29,7 @@ public function getByEmail($email) {
 } // retrieves a single user record from the database by their email address
 // used to check if a user exists
 
-
-
+public function getUsers() {
+    return $this->getAll();
+}
 }

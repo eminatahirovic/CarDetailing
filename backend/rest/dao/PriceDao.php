@@ -9,5 +9,6 @@ class PriceDao extends BaseDao {
         parent::__construct($this->table, 'price_id');
     }
 
+    
 }
 ?>
