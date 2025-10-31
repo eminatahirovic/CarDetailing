@@ -7,10 +7,10 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/BaseDao.php';
 require_once __DIR__ . '/UserDao.php';
 
-//$userDao = new UserDao();
-//$userDao->addUser("Emina", "Tahirovic", "tesit1@gmail.com", "emin123");
-//$users = $userDao->getUsers();
-//print_r($users);
+$userDao = new UserDao();
+$userDao->addUser("Emina", "Tahirovic", "tesit134@gmail.com", "emina123");
+$users = $userDao->getUsers();
+print_r($users);
 
 
 

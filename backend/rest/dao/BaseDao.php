@@ -40,6 +40,16 @@ class BaseDao{
         return $stmt->fetch();
     }
 
+    public function create(array $data): int {
+        $columns = array_keys($data);
+        $placeholders = array_map(fn($col) => ':' . $col, $columns);
+        $sql = "INSERT INTO `{$this->table}` (`" . implode("`,`", $columns) . "`)
+            VALUES (" . implode(",", $placeholders) . ")";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute($data);
+        return (int)$this->connection->lastInsertId();
+}
+
     public function insert($data) {
         $columns = implode(", ", array_keys($data));
         $placeholders = ":" . implode(", :", array_keys($data));

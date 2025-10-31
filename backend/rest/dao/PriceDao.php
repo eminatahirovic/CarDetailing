@@ -10,12 +10,12 @@ class PriceDao extends BaseDao {
     }
 
 
-    public function updatePriceById($price_id, $price) {
-        $stmt = $this->connection->prepare("UPDATE " . $this->table . " SET price = :price WHERE price_id = :price_id");
-        $stmt->bindParam(':price', $price);
-        $stmt->bindParam(':price_id', $price_id);
-        return $stmt->execute();
-    } //updates prices 
+    // public function updatePriceById($price_id, $price) {
+    //     $stmt = $this->connection->prepare("UPDATE " . $this->table . " SET price = :price WHERE price_id = :price_id");
+    //     $stmt->bindParam(':price', $price);
+    //     $stmt->bindParam(':price_id', $price_id);
+    //     return $stmt->execute();
+    // } //updates prices 
 
 }
 ?>
