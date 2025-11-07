@@ -1,6 +1,6 @@
 <?php
 require_once 'BaseService.php';
-require_once 'BookingDao.php';
+require_once __DIR__ . '/../dao/BookingDao.php';
 
 
    

@@ -1,6 +1,7 @@
 <?php
 require_once 'BaseService.php';
-require_once 'ServiceDao.php';
+require_once __DIR__ . '/../dao/ServiceDao.php';
+
 
 
 

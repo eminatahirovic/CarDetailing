@@ -1,7 +1,6 @@
 <?php
 require_once 'BaseService.php';
-require_once 'TeamDao.php';
-
+require_once __DIR__ . '/../dao/TeamDao.php';
 
 class TeamService extends BaseService {
    public function __construct() {
