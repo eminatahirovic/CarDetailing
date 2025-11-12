@@ -3,10 +3,9 @@ require_once 'BaseService.php';
 require_once __DIR__ . '/../dao/TeamDao.php';
 
 class TeamService extends BaseService {
-   public function __construct() {
-       $dao = new TeamDao();
-       parent::__construct($dao);
-   }
+    public function __construct() {
+        parent::__construct(new TeamDao());
+    }
 
 
  public function updateTeamMemberById($team_id, $name, $role, $status) {

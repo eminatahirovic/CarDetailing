@@ -1,17 +1,12 @@
-
-
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require 'vendor/autoload.php';
-require_once __DIR__ . '/config.php';
 
-/*
-|--------------------------------------------------------------------------
-| REGISTER SERVICES
-|--------------------------------------------------------------------------
-*/
+require 'vendor/autoload.php';
+
+// SERVICES
 require_once __DIR__ . '/rest/services/UserService.php';
 require_once __DIR__ . '/rest/services/TeamService.php';
 require_once __DIR__ . '/rest/services/ServiceService.php';
@@ -24,53 +19,23 @@ Flight::register('serviceService', 'ServiceService');
 Flight::register('priceService', 'PriceService');
 Flight::register('bookingService', 'BookingService');
 
-/*
-|--------------------------------------------------------------------------
-| CORS HEADERS
-|--------------------------------------------------------------------------
-| Allow frontend (React, JS, etc.) to access your API from localhost.
-*/
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-
-// Handle preflight OPTIONS requests
-Flight::route('OPTIONS *', function () {
-    header('Access-Control-Allow-Origin: *');
-    header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization');
-    exit(0);
-});
-
-/*
-|--------------------------------------------------------------------------
-| INCLUDE ROUTE FILES
-|--------------------------------------------------------------------------
-*/
+// ROUTES  (paths must be correct!)
 require_once __DIR__ . '/rest/routes/UserRoutes.php';
 require_once __DIR__ . '/rest/routes/TeamRoutes.php';
 require_once __DIR__ . '/rest/routes/ServiceRoutes.php';
 require_once __DIR__ . '/rest/routes/PriceRoutes.php';
 require_once __DIR__ . '/rest/routes/BookingRoutes.php';
 
-/*
-|--------------------------------------------------------------------------
-| ROOT ROUTES (for browser testing)
-|--------------------------------------------------------------------------
-*/
-Flight::route('GET /', function () {
-    echo 'CarDetailing API is running.';
+// CORS (keeps your existing preflight happy)
+Flight::route('OPTIONS *', function () {
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  header('Access-Control-Allow-Headers: Content-Type, Authorization');
+  Flight::halt(204);
 });
 
-Flight::route('GET /index.php', function () {
-    echo 'CarDetailing API is running.';
-});
+// QUICK DIAGNOSTIC ROUTE
+Flight::route('GET /health', fn() => Flight::json(['ok' => true, 'ts' => time()]));
+Flight::route('GET /users', fn() => Flight::json([['user_id'=>1,'name'=>'Test']]));
 
-/*
-|--------------------------------------------------------------------------
-| START FLIGHT
-|--------------------------------------------------------------------------
-*/
 Flight::start();
-
-?> 

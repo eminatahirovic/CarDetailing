@@ -1,34 +1,54 @@
 <?php
+Flight::route('OPTIONS *', function() {
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  header('Access-Control-Allow-Headers: Content-Type, Authorization');
+  Flight::halt(204);
+});
+if (!function_exists('payload')) {
+  function payload() {
+    $raw = Flight::request()->getBody();
+    if ($raw) {
+      $json = json_decode($raw, true);
+      if (json_last_error() === JSON_ERROR_NONE) return $json;
+    }
+    return Flight::request()->data->getData();
+  }
+}
 
-// Get all price entries
+// GET all prices
 Flight::route('GET /prices', function() {
-    Flight::json(Flight::priceService()->getAll());
+  Flight::json(Flight::priceService()->getAll());
 });
 
-// Get single price by ID
+// GET price by ID
 Flight::route('GET /prices/@id', function($id) {
-    Flight::json(Flight::priceService()->getById($id));
+  Flight::json(Flight::priceService()->getById($id));
 });
 
-// Create new price entry
+// CREATE price
 Flight::route('POST /prices', function() {
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::priceService()->create($data));
+  $data = payload();
+  try {
+    Flight::json(Flight::priceService()->create($data), 201);
+  } catch (Throwable $e) {
+    Flight::json(['error' => $e->getMessage()], 400);
+  }
 });
 
-// Update price
+// UPDATE price (PUT)
 Flight::route('PUT /prices/@id', function($id) {
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::priceService()->update($id, $data));
+  $data = payload();
+  Flight::json(Flight::priceService()->update($id, $data));
 });
 
-// Partial update
+// PARTIAL UPDATE (PATCH)
 Flight::route('PATCH /prices/@id', function($id) {
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::priceService()->update($id, $data));
+  $data = payload();
+  Flight::json(Flight::priceService()->update($id, $data));
 });
 
-// Delete price
+// DELETE price
 Flight::route('DELETE /prices/@id', function($id) {
-    Flight::json(Flight::priceService()->delete($id));
+  Flight::json(Flight::priceService()->delete($id));
 });

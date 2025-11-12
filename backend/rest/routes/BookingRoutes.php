@@ -1,34 +1,54 @@
 <?php
+Flight::route('OPTIONS *', function() {
+  header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  header('Access-Control-Allow-Headers: Content-Type, Authorization');
+  Flight::halt(204);
+});
+if (!function_exists('payload')) {
+  function payload() {
+    $raw = Flight::request()->getBody();
+    if ($raw) {
+      $json = json_decode($raw, true);
+      if (json_last_error() === JSON_ERROR_NONE) return $json;
+    }
+    return Flight::request()->data->getData();
+  }
+}
 
-// Get all bookings
+// GET all bookings
 Flight::route('GET /bookings', function() {
-    Flight::json(Flight::bookingService()->getAll());
+  Flight::json(Flight::bookingService()->getAll());
 });
 
-// Get single booking by ID
+// GET booking by ID
 Flight::route('GET /bookings/@id', function($id) {
-    Flight::json(Flight::bookingService()->getById($id));
+  Flight::json(Flight::bookingService()->getById($id));
 });
 
-// Create new booking
+// CREATE booking
 Flight::route('POST /bookings', function() {
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::bookingService()->create($data));
+  $data = payload();
+  try {
+    Flight::json(Flight::bookingService()->create($data), 201);
+  } catch (Throwable $e) {
+    Flight::json(['error' => $e->getMessage()], 400);
+  }
 });
 
-// Update booking
+// UPDATE booking (PUT)
 Flight::route('PUT /bookings/@id', function($id) {
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::bookingService()->update($id, $data));
+  $data = payload();
+  Flight::json(Flight::bookingService()->update($id, $data));
 });
 
-// Partial update
+// PARTIAL UPDATE (PATCH)
 Flight::route('PATCH /bookings/@id', function($id) {
-    $data = Flight::request()->data->getData();
-    Flight::json(Flight::bookingService()->update($id, $data));
+  $data = payload();
+  Flight::json(Flight::bookingService()->update($id, $data));
 });
 
-// Delete booking
+// DELETE booking
 Flight::route('DELETE /bookings/@id', function($id) {
-    Flight::json(Flight::bookingService()->delete($id));
+  Flight::json(Flight::bookingService()->delete($id));
 });
