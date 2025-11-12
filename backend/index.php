@@ -37,5 +37,6 @@ Flight::route('OPTIONS *', function () {
 // QUICK DIAGNOSTIC ROUTE
 Flight::route('GET /health', fn() => Flight::json(['ok' => true, 'ts' => time()]));
 Flight::route('GET /users', fn() => Flight::json([['user_id'=>1,'name'=>'Test']]));
+Flight::route('GET /test', function(){echo 'Test radi';});
 
 Flight::start();

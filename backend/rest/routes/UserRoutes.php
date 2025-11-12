@@ -21,7 +21,9 @@ if (!function_exists('payload')) {
 
 // GET all users
 Flight::route('GET /users', function() {
-  Flight::json(Flight::userService()->getAll());
+    $userDao = new UserDao();
+    $data = $userDao ->get_all();
+  Flight::json($data);
 });
 
 // GET user by ID
