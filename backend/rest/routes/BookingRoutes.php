@@ -11,25 +11,24 @@ Flight::route('GET /bookings/@id', function($id) {
 });
 
 // CREATE booking
-  Flight::route('POST /bookings', function(){
-   $data = Flight::request()->data->getData();
-   Flight::json(Flight::bookingService()->add_booking($data));
+Flight::route('POST /bookings', function() {
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::bookingService()->create($data));
 });
 
-
-// UPDATE booking (PUT)
+// UPDATE booking
 Flight::route('PUT /bookings/@id', function($id) {
-  $data = Flight::request() ->data->getData; 
+  $data = Flight::request()->data->getData();
   Flight::json(Flight::bookingService()->update($id, $data));
 });
 
-// PARTIAL UPDATE (PATCH)
+// PARTIAL update
 Flight::route('PATCH /bookings/@id', function($id) {
-  $data = Flight::request() -> data->getData(); 
+  $data = Flight::request()->data->getData();
   Flight::json(Flight::bookingService()->partial_update($id, $data));
 });
 
 // DELETE booking
 Flight::route('DELETE /bookings/@id', function($id) {
-  Flight::json(Flight::bookingService()->delete_booking($id));
+  Flight::json(Flight::bookingService()->delete($id));
 });

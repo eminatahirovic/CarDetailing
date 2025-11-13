@@ -2,7 +2,7 @@
 
 // GET all users
 Flight::route('GET /users', function() {
-  Flight::json(Flight::userService()->getUsers());
+  Flight::json(Flight::userService()->getAll());
 });
 
 // GET user by ID
@@ -11,21 +11,20 @@ Flight::route('GET /users/@id', function($id) {
 });
 
 // CREATE user
-Flight::route('POST /users', function(){
-   $data = Flight::request()->data->getData();
-   Flight::json(Flight::userService()->addUser($data));
+Flight::route('POST /users', function() {
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::userService()->create($data));
 });
 
-
-// UPDATE user (PUT)
+// FULL UPDATE user
 Flight::route('PUT /users/@id', function($id) {
-  $data = Flight::request() ->data->getData; 
+  $data = Flight::request()->data->getData();
   Flight::json(Flight::userService()->update($id, $data));
 });
 
-// PARTIAL UPDATE user (PATCH)
+// PARTIAL UPDATE user
 Flight::route('PATCH /users/@id', function($id) {
-  $data = Flight::request() ->data->getData; 
+  $data = Flight::request()->data->getData();
   Flight::json(Flight::userService()->partial_update($id, $data));
 });
 

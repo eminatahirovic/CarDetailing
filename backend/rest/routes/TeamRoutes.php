@@ -1,6 +1,5 @@
 <?php
 
-
 // GET all team members
 Flight::route('GET /team', function() {
   Flight::json(Flight::teamService()->getAll());
@@ -13,23 +12,23 @@ Flight::route('GET /team/@id', function($id) {
 
 // CREATE team member
 Flight::route('POST /team', function() {
- $data = Flight::request()->data->getData();
- Flight::json(Flight::teamService()->addTeamMember($data));
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::teamService()->create($data));
 });
 
-// UPDATE team member (PUT)
+// UPDATE team member
 Flight::route('PUT /team/@id', function($id) {
   $data = Flight::request()->data->getData();
   Flight::json(Flight::teamService()->update($id, $data));
 });
 
-// PARTIAL UPDATE (PATCH)
+// PARTIAL update
 Flight::route('PATCH /team/@id', function($id) {
   $data = Flight::request()->data->getData();
   Flight::json(Flight::teamService()->partial_update($id, $data));
 });
 
-// DELETE team member
+// DELETE
 Flight::route('DELETE /team/@id', function($id) {
   Flight::json(Flight::teamService()->delete($id));
 });
