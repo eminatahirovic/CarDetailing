@@ -1,10 +1,10 @@
 <?php
-Flight::route('OPTIONS *', function() {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  header('Access-Control-Allow-Headers: Content-Type, Authorization');
-  Flight::halt(204);
-});
+// Flight::route('OPTIONS *', function() {
+//   header('Access-Control-Allow-Origin: *');
+//   header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
+//   header('Access-Control-Allow-Headers: Content-Type, Authorization');
+//   Flight::halt(204);
+// });
 if (!function_exists('payload')) {
   function payload() {
     $raw = Flight::request()->getBody();
@@ -27,25 +27,22 @@ Flight::route('GET /services/@id', function($id) {
 });
 
 // CREATE service
-Flight::route('POST /services', function() {
-  $data = payload();
-  try {
-    Flight::json(Flight::serviceService()->create($data), 201);
-  } catch (Throwable $e) {
-    Flight::json(['error' => $e->getMessage()], 400);
-  }
+Flight::route('POST /services', function(){
+   $data = Flight::request()->data->getData();
+   Flight::json(Flight::ServiceService()->addService($data));
 });
+
 
 // UPDATE service (PUT)
 Flight::route('PUT /services/@id', function($id) {
-  $data = payload();
+  $data = Flight::request()->data->getData(); 
   Flight::json(Flight::serviceService()->update($id, $data));
 });
 
 // PARTIAL UPDATE (PATCH)
 Flight::route('PATCH /services/@id', function($id) {
-  $data = payload();
-  Flight::json(Flight::serviceService()->update($id, $data));
+  $data = Flight::request()->data->getData(); 
+  Flight::json(Flight::serviceService()->partial_update($id, $data));
 });
 
 // DELETE service

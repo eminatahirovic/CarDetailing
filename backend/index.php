@@ -27,16 +27,16 @@ require_once __DIR__ . '/rest/routes/PriceRoutes.php';
 require_once __DIR__ . '/rest/routes/BookingRoutes.php';
 
 // CORS (keeps your existing preflight happy)
-Flight::route('OPTIONS *', function () {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  header('Access-Control-Allow-Headers: Content-Type, Authorization');
-  Flight::halt(204);
-});
+// Flight::route('OPTIONS *', function () {
+//   header('Access-Control-Allow-Origin: *');
+//   header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
+//   header('Access-Control-Allow-Headers: Content-Type, Authorization');
+//   Flight::halt(204);
+// });
 
-// QUICK DIAGNOSTIC ROUTE
-Flight::route('GET /health', fn() => Flight::json(['ok' => true, 'ts' => time()]));
-Flight::route('GET /users', fn() => Flight::json([['user_id'=>1,'name'=>'Test']]));
-Flight::route('GET /test', function(){echo 'Test radi';});
+// // QUICK DIAGNOSTIC ROUTE
+// Flight::route('GET /health', fn() => Flight::json(['ok' => true, 'ts' => time()]));
+// Flight::route('GET /users', fn() => Flight::json([['user_id'=>1,'name'=>'Test']]));
+// Flight::route('GET /test', function(){echo 'Test radi';});
 
 Flight::start();

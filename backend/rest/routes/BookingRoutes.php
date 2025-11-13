@@ -1,20 +1,4 @@
 <?php
-Flight::route('OPTIONS *', function() {
-  header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS');
-  header('Access-Control-Allow-Headers: Content-Type, Authorization');
-  Flight::halt(204);
-});
-if (!function_exists('payload')) {
-  function payload() {
-    $raw = Flight::request()->getBody();
-    if ($raw) {
-      $json = json_decode($raw, true);
-      if (json_last_error() === JSON_ERROR_NONE) return $json;
-    }
-    return Flight::request()->data->getData();
-  }
-}
 
 // GET all bookings
 Flight::route('GET /bookings', function() {
@@ -27,28 +11,25 @@ Flight::route('GET /bookings/@id', function($id) {
 });
 
 // CREATE booking
-Flight::route('POST /bookings', function() {
-  $data = payload();
-  try {
-    Flight::json(Flight::bookingService()->create($data), 201);
-  } catch (Throwable $e) {
-    Flight::json(['error' => $e->getMessage()], 400);
-  }
+  Flight::route('POST /bookings', function(){
+   $data = Flight::request()->data->getData();
+   Flight::json(Flight::bookingService()->add_booking($data));
 });
+
 
 // UPDATE booking (PUT)
 Flight::route('PUT /bookings/@id', function($id) {
-  $data = payload();
+  $data = Flight::request() ->data->getData; 
   Flight::json(Flight::bookingService()->update($id, $data));
 });
 
 // PARTIAL UPDATE (PATCH)
 Flight::route('PATCH /bookings/@id', function($id) {
-  $data = payload();
-  Flight::json(Flight::bookingService()->update($id, $data));
+  $data = Flight::request() -> data->getData(); 
+  Flight::json(Flight::bookingService()->partial_update($id, $data));
 });
 
 // DELETE booking
 Flight::route('DELETE /bookings/@id', function($id) {
-  Flight::json(Flight::bookingService()->delete($id));
+  Flight::json(Flight::bookingService()->delete_booking($id));
 });

@@ -11,7 +11,8 @@ require_once __DIR__ . '/../dao/UserDao.php';
         parent::__construct(new UserDao());
     }
 
-    public function add_patient($patient){
-        return $this->user_dao->add_user($user); 
+
+    public function getUsers(){
+        return $this->dao->getUsers(); 
     }
 }

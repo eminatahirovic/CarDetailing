@@ -27,25 +27,21 @@ Flight::route('GET /prices/@id', function($id) {
 });
 
 // CREATE price
-Flight::route('POST /prices', function() {
-  $data = payload();
-  try {
-    Flight::json(Flight::priceService()->create($data), 201);
-  } catch (Throwable $e) {
-    Flight::json(['error' => $e->getMessage()], 400);
-  }
+Flight::route('POST /prices', function(){
+   $data = Flight::request()->data->getData();
+   Flight::json(Flight::priceService()->addPrice($data));
 });
 
 // UPDATE price (PUT)
 Flight::route('PUT /prices/@id', function($id) {
-  $data = payload();
-  Flight::json(Flight::priceService()->update($id, $data));
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::priceService()->updatePrice($id, $data));
 });
 
 // PARTIAL UPDATE (PATCH)
 Flight::route('PATCH /prices/@id', function($id) {
-  $data = payload();
-  Flight::json(Flight::priceService()->update($id, $data));
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::priceService()->partial_update($id, $data));
 });
 
 // DELETE price
