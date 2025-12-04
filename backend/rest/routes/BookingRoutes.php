@@ -137,5 +137,6 @@ Flight::route('PATCH /bookings/@id', function($id) {
 
 // DELETE booking
 Flight::route('DELETE /bookings/@id', function($id) {
+  
   Flight::json(Flight::bookingService()->delete($id));
 });
