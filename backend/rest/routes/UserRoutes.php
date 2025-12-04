@@ -1,9 +1,15 @@
-<?php
+ 
+ 
+ <?php
+
+
+
  /**
  * @OA\Get(
  *     path="/users",
  *     tags={"users"},
  *     summary="Get all users",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Response(
  *         response=200,
  *         description="Array of all users in the database"
@@ -13,7 +19,8 @@
 
 // GET all users
 Flight::route('GET /users', function() {
-  Flight::json(Flight::userService()->getAll());
+Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+Flight::json(Flight::userService()->getAll());
 });
 
 /**
@@ -21,6 +28,7 @@ Flight::route('GET /users', function() {
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Get user by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -36,15 +44,19 @@ Flight::route('GET /users', function() {
  */
 
 // GET user by ID
+ 
 Flight::route('GET /users/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::userService()->getById($id));
 });
+
 
 /**
  * @OA\Post(
  *     path="/users",
  *     tags={"users"},
  *     summary="Create a new user",
+ *     security={{"BearerAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -61,16 +73,20 @@ Flight::route('GET /users/@id', function($id) {
  */
 
 // CREATE user
+ 
 Flight::route('POST /users', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::userService()->create($data));
 });
+ 
 
 /**
  * @OA\Put(
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Update a user by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -95,16 +111,22 @@ Flight::route('POST /users', function() {
  */
 
 // FULL UPDATE user
+ 
 Flight::route('PUT /users/@id', function($id) {
-  $data = Flight::request()->data->getData();
+  Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
+ // $data = Flight::request()->data->getData();
+  $data = json_decode(Flight::request()->getBody(), true);
   Flight::json(Flight::userService()->update($id, $data));
 });
+
+
 
 /**
  * @OA\Patch(
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Partially update a user by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -127,7 +149,10 @@ Flight::route('PUT /users/@id', function($id) {
  */
 
 // PARTIAL UPDATE user / PATCH
+
+
 Flight::route('PATCH /users/@id', function($id) {
+  Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::userService()->partial_update($id, $data));
 });
@@ -137,6 +162,7 @@ Flight::route('PATCH /users/@id', function($id) {
  *     path="/users/{id}",
  *     tags={"users"},
  *     summary="Delete a user by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -153,5 +179,7 @@ Flight::route('PATCH /users/@id', function($id) {
 
 // DELETE user
 Flight::route('DELETE /users/@id', function($id) {
+  Flight::auth_middleware()->authorizeRole(Roles::ADMIN);
   Flight::json(Flight::userService()->delete($id));
-});
+}); 
+
