@@ -12,3 +12,5 @@ $.ajax({
    toastr.error(XMLHttpRequest?.responseText ?  XMLHttpRequest.responseText : 'Error');
  },
 });
+
+

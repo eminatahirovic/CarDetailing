@@ -20,7 +20,10 @@ class BaseDao{
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 ]
             );
+            error_log("✅ DB connected: " . DB_NAME . "@" . DB_HOST . ":" . DB_PORT);
+
         } catch(PDOException $e){
+            error_log("❌ DB connection failed: " . $e->getMessage());
             throw $e; 
         }
     }

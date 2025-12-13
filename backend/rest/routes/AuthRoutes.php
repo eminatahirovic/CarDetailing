@@ -43,22 +43,23 @@ Flight::group('/auth', function() {
      *     @OA\Response(response=500, description="Internal server error")
      * )
      */
-    Flight::route('POST /register', function () {
-        $data = json_decode(Flight::request()->getBody(), true);
-        if (!is_array($data)) {
-            Flight::halt(400, 'Invalid request payload');
-        }
-
-        $response = Flight::auth_service()->register($data);
-        if ($response['success']) {
-            Flight::json([
-                'message' => 'User registered successfully',
-                'data' => $response['data']
-            ]);
-        } else {
-            Flight::halt(500, $response['error']);
-        }
-    });
+   Flight::route('/*', function() {
+   if (
+       strpos(Flight::request()->url, '/auth/login') === 0 ||
+       strpos(Flight::request()->url, '/auth/register') === 0
+   ) {
+       return true;
+   } else {
+       try {
+           $token = Flight::request()->getHeader("Authorization"); // Changed from "Authentication"
+           $token = str_replace('Bearer ', '', $token);
+           if (Flight::auth_middleware()->verifyToken($token))
+               return true;
+       } catch (\Exception $e) {
+           Flight::halt(401, $e->getMessage());
+       }
+   }
+});
 
    /**
     * @OA\Post(
