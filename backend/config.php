@@ -17,3 +17,8 @@ define('DB_PASSWORD', '');
 define('DB_HOST', '127.0.0.1'); //localhost
 define('JWT_SECRET', 'password'); // JWT Secret Key Definition
 
+class Config {
+  public static function JWT_SECRET() {
+    return JWT_SECRET;
+  }
+}

@@ -1,13 +1,14 @@
 <section id="register"><section class="container py-5" style="max-width:720px;">
   <h2 class="section-title h3 mb-3">Register</h2>
+  <div id="registerMessage" class="alert" style="display: none;"></div>
   <form id="registerForm">
     <div class="row g-3">
-      <div class="col-md-6"><label class="form-label">First name</label><input type="text" class="form-control" required></div>
-      <div class="col-md-6"><label class="form-label">Last name</label><input type="text" class="form-control" required></div>
-      <div class="col-12"><label class="form-label">Email</label><input type="email" class="form-control" required></div>
-      <div class="col-md-6"><label class="form-label">Password</label><input type="password" class="form-control" required></div>
-      <div class="col-md-6"><label class="form-label">Confirm password</label><input type="password" class="form-control" required></div>
-      <div class="col-12"><button class="btn btn-primary">Create account</button><a class="btn btn-outline-secondary ms-2" href="#login">Back to login</a></div>
+      <div class="col-md-6"><label class="form-label">First name</label><input type="text" class="form-control" id="registerFirstName" required></div>
+      <div class="col-md-6"><label class="form-label">Last name</label><input type="text" class="form-control" id="registerLastName" required></div>
+      <div class="col-12"><label class="form-label">Email</label><input type="email" class="form-control" id="registerEmail" required></div>
+      <div class="col-md-6"><label class="form-label">Password</label><input type="password" class="form-control" id="registerPassword" required></div>
+      <div class="col-md-6"><label class="form-label">Confirm password</label><input type="password" class="form-control" id="registerConfirmPassword" required></div>
+      <div class="col-12"><button type="submit" class="btn btn-primary" id="registerBtn">Create account</button><a class="btn btn-outline-secondary ms-2" href="#login">Back to login</a></div>
     </div>
   </form>
 </section></section>

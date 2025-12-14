@@ -151,3 +151,77 @@ Flight::route('DELETE /bookings/@id', function($id) {
   Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   Flight::json(Flight::bookingService()->delete($id));
 });
+
+Flight::route('GET /bookings/user/@user_id', function($user_id) {
+    $response = Flight::booking_service()->getByUserId($user_id);
+    
+    if ($response['success']) {
+        Flight::json([
+            'message' => 'Bookings retrieved',
+            'data' => $response['data']
+        ]);
+    } else {
+        Flight::halt(404, $response['error']);
+    }
+});
+/**
+ * @OA\Get(
+ *     path="/bookings/user/{user_id}",
+ *     tags={"Bookings"},
+ *     summary="Get bookings by User ID",
+ *     security={{"BearerAuth": {}}},
+ *     @OA\Parameter(
+ *         name="user_id",
+ *         in="path",
+ *         required=true,
+ *         description="User ID"
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Bookings found"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="No bookings found for the user"
+ *     )
+ * )
+ */
+
+Flight::route('GET /bookings/user/@user_id', function($user_id) {
+    // Get bookings for this user
+    $bookings = Flight::booking_service()->getByUserId($user_id);
+    
+    if ($bookings) {
+        Flight::json([
+            'message' => 'Bookings retrieved',
+            'data' => $bookings
+        ]);
+    } else {
+        Flight::json([
+            'message' => 'No bookings found',
+            'data' => []
+        ]);
+    }
+});
+/**
+ * @OA\Get(
+ *     path="/bookings/user/{user_id}",
+ *     tags={"Bookings"},
+ *     summary="Get bookings by User ID",
+ *     security={{"BearerAuth": {}}},
+ *     @OA\Parameter(
+ *         name="user_id",
+ *         in="path",
+ *         required=true,
+ *         description="User ID"
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Bookings found"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="No bookings found for the user"
+ *     )
+ * )
+ */

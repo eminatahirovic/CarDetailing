@@ -5,6 +5,15 @@ use Firebase\JWT\Key;
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 
 require 'vendor/autoload.php';
@@ -31,10 +40,11 @@ Flight::route('/*', function() {
        strpos(Flight::request()->url, '/auth/login') === 0 ||
        strpos(Flight::request()->url, '/auth/register') === 0
    ) {
-       return true;
+       return true; 
    } else {
        try {
-           $token = Flight::request()->getHeader("Authentication");
+           $token = Flight::request()->getHeader("Authorization"); 
+           $token = str_replace('Bearer ', '', $token);
            if (Flight::auth_middleware()->verifyToken($token))
                return true;
        } catch (\Exception $e) {
