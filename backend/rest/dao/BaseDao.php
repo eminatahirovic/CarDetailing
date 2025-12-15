@@ -42,28 +42,6 @@ class BaseDao{
         return $stmt->fetch();
     }
 
-//     public function create(array $data): int {
-//         $columns = array_keys($data);
-//         $placeholders = array_map(fn($col) => ':' . $col, $columns);
-//         $sql = "INSERT INTO `{$this->table}` (`" . implode("`,`", $columns) . "`)
-//             VALUES (" . implode(",", $placeholders) . ")";
-//         $stmt = $this->connection->prepare($sql);
-//         $stmt->execute($data);
-//         return (int)$this->connection->lastInsertId();
-// }
-
-/*public function create($entity) {
-    // $entity is an associative array: ['name' => '...', 'email' => '...', ...]
-    $columns = array_keys($entity); // ['name', 'lastname', 'email', 'password']
-    $columnList = implode(", ", $columns);
-    $placeholders = ":" . implode(", :", $columns);
-    $sql = "INSERT INTO {$this->table} ({$columnList}) VALUES ({$placeholders})";
-    $stmt = $this->connection->prepare($sql);
-    $stmt->execute($entity);
-    $entity[$this->idColumn] = $this->connection->lastInsertId();
-    return $entity;
-} */
-
     // CREATE (POST)
     public function create(array $data) {
         if (empty($data)) {
@@ -89,11 +67,9 @@ class BaseDao{
 
 
 
-
 // UPDATE (PUT)
   public function update($id, array $data) {
         if (empty($data)) {
-            // Avoid "UPDATE table SET  WHERE id = :id"
             return $this->getById($id);
         }
 
@@ -116,8 +92,6 @@ class BaseDao{
     }
 
 
-
-
     public function insert($data) {
         $columns = implode(", ", array_keys($data));
         $placeholders = ":" . implode(", :", array_keys($data));
@@ -126,19 +100,6 @@ class BaseDao{
         return $stmt->execute($data);
     }
     
-
-    /*public function update($id, $data) {
-        $fields = "";
-        foreach ($data as $key => $value) {
-            $fields .= "$key = :$key, ";
-        }
-        $fields = rtrim($fields, ", ");
-        $sql = "UPDATE " . $this->table . " SET $fields WHERE " . $this->idColumn . " = :id";
-        $stmt = $this->connection->prepare($sql);
-        $data['id'] = $id;
-        return $stmt->execute($data);
-    }
-*/
 
     public function delete($id) {
     $sql = "DELETE FROM `{$this->table}` WHERE `{$this->idColumn}` = :id";
