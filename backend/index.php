@@ -18,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 
 require 'vendor/autoload.php';
-require_once __DIR__ . '/Roles.php';
 
 require_once __DIR__ . '/rest/services/UserService.php';
 require_once __DIR__ . '/rest/services/TeamService.php';
@@ -36,8 +35,8 @@ Flight::register('teamService', 'TeamService');
 Flight::register('serviceService', 'ServiceService');
 Flight::register('priceService', 'PriceService');
 Flight::register('bookingService', 'BookingService');
-Flight::register('auth_service', 'AuthService');
-Flight::register('auth_middleware', 'AuthMiddleware');
+Flight::register('authService', 'AuthService');
+Flight::register('authMiddleware', 'AuthMiddleware');
 
 Flight::route('/*', function() {
    if (

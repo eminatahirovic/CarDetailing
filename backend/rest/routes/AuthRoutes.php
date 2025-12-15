@@ -19,22 +19,26 @@ use Firebase\JWT\Key;
  *     @OA\Response(response=200, description="User registered successfully")
  * )
  */
-Flight::route('POST /auth/register', function() {
-    $data = json_decode(Flight::request()->getBody(), true);
-    
+Flight::route('POST /auth/register', function () {
+
+    $data = Flight::request()->data->getData();
+
     if (!is_array($data)) {
-        Flight::json(['success' => false, 'error' => 'Invalid request payload'], 400);
+        Flight::json([
+            'success' => false,
+            'error' => 'Invalid request payload'
+        ], 400);
         return;
     }
 
-    $response = Flight::auth_service()->register($data);
-    
+    $response = Flight::authService()->register($data);
+
     if ($response['success']) {
         Flight::json([
             'success' => true,
             'message' => 'User registered successfully',
             'data' => $response['data']
-        ]);
+        ], 201);
     } else {
         Flight::json([
             'success' => false,
@@ -42,6 +46,7 @@ Flight::route('POST /auth/register', function() {
         ], 400);
     }
 });
+
 
 /**
  * @OA\Post(
@@ -67,7 +72,7 @@ Flight::route('POST /auth/login', function() {
         return;
     }
 
-    $response = Flight::auth_service()->login($data);
+    $response = Flight::authService()->login($data);
     
     if ($response['success']) {
         Flight::json([

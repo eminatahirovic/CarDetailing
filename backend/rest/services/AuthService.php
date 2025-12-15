@@ -17,28 +17,63 @@ class AuthService extends BaseService {
     return $this->auth_dao->get_user_by_email($email);
   }
 
+  // public function register($entity) {
+  //   if (empty($entity['email']) || empty($entity['password'])) {
+  //     return ['success' => false, 'error' => 'Email and password are required.'];
+  //   }
+
+  //   $email_exists = $this->auth_dao->get_user_by_email($entity['email']);
+  //   if($email_exists){
+  //     return ['success' => false, 'error' => 'Email already registered.'];
+  //   }
+
+  //   // default role if you have role column
+  //   if (!isset($entity['role']) || !$entity['role']) {
+  //     $entity['role'] = 'user';
+  //   }
+
+  //   $entity['password'] = password_hash($entity['password'], PASSWORD_BCRYPT);
+
+  //   $entity = parent::insert($entity);
+
+  //   unset($entity['password']);
+  //   return ['success' => true, 'data' => $entity];
+  // }
+
   public function register($entity) {
+
+    if (!is_array($entity)) {
+        return ['success' => false, 'error' => 'Invalid request payload'];
+    }
+
     if (empty($entity['email']) || empty($entity['password'])) {
-      return ['success' => false, 'error' => 'Email and password are required.'];
+        return ['success' => false, 'error' => 'Email and password are required.'];
     }
 
     $email_exists = $this->auth_dao->get_user_by_email($entity['email']);
-    if($email_exists){
-      return ['success' => false, 'error' => 'Email already registered.'];
+    if ($email_exists) {
+        return ['success' => false, 'error' => 'Email already registered.'];
     }
 
-    // default role if you have role column
-    if (!isset($entity['role']) || !$entity['role']) {
-      $entity['role'] = 'user';
+    if (empty($entity['role'])) {
+        $entity['role'] = 'user';
     }
 
-    $entity['password'] = password_hash($entity['password'], PASSWORD_BCRYPT);
+    $plainPassword = $entity['password'];
+    $entity['password'] = password_hash($plainPassword, PASSWORD_BCRYPT);
 
-    $entity = parent::add($entity);
+    $id = parent::insert($entity);
+
+    if (!$id) {
+        return ['success' => false, 'error' => 'User registration failed'];
+    }
 
     unset($entity['password']);
+    $entity['id'] = $id;
+
     return ['success' => true, 'data' => $entity];
-  }
+}
+
 
   public function login($entity) {
     if (empty($entity['email']) || empty($entity['password'])) {
