@@ -1,4 +1,5 @@
 <?php
+
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -17,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 
 require 'vendor/autoload.php';
+require_once __DIR__ . '/Roles.php';
 
 require_once __DIR__ . '/rest/services/UserService.php';
 require_once __DIR__ . '/rest/services/TeamService.php';
@@ -26,6 +28,8 @@ require_once __DIR__ . '/rest/services/BookingService.php';
 require_once __DIR__ . '/rest/services/AuthService.php';
 require_once __DIR__ . '/middleware/AuthMiddleware.php';
 require_once __DIR__ . '/rest/routes/test.php';
+
+
 
 Flight::register('userService', 'UserService');
 Flight::register('teamService', 'TeamService');
@@ -60,5 +64,6 @@ require_once __DIR__ . '/rest/routes/TeamRoutes.php';
 require_once __DIR__ . '/rest/routes/ServiceRoutes.php';
 require_once __DIR__ . '/rest/routes/PriceRoutes.php';
 require_once __DIR__ . '/rest/routes/BookingRoutes.php';
+
 
 Flight::start();
