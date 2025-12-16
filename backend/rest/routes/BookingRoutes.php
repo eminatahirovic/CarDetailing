@@ -4,6 +4,7 @@
  *     path="/bookings",
  *     tags={"Bookings"},
  *     summary="Get all bookings",
+ *     security={{"BearerAuth": {}}},
  *     description="Returns a list of all bookings",
  *     @OA\Response(
  *         response=200,
@@ -15,6 +16,7 @@
 
 // GET all bookings
 Flight::route('GET /bookings', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::bookingService()->getAll());
 });
 
@@ -23,6 +25,7 @@ Flight::route('GET /bookings', function() {
  *     path="/bookings/{id}",
  *     tags={"Bookings"},
  *     summary="Get booking by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(
  *         name="id",
  *         in="path",
@@ -43,6 +46,7 @@ Flight::route('GET /bookings', function() {
 
 // GET booking by ID
 Flight::route('GET /bookings/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::bookingService()->getById($id));
 });
 
@@ -51,6 +55,7 @@ Flight::route('GET /bookings/@id', function($id) {
  *     path="/bookings",
  *     tags={"Bookings"},
  *     summary="Create a new booking",
+ *     security={{"BearerAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -68,6 +73,7 @@ Flight::route('GET /bookings/@id', function($id) {
 
 // CREATE booking
 Flight::route('POST /bookings', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::bookingService()->create($data));
 });
@@ -77,6 +83,7 @@ Flight::route('POST /bookings', function() {
  *     path="/bookings/{id}",
  *     tags={"Bookings"},
  *     summary="Update an existing booking",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\RequestBody(
  *         required=true,
@@ -94,6 +101,7 @@ Flight::route('POST /bookings', function() {
 
 // UPDATE booking
 Flight::route('PUT /bookings/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::bookingService()->update($id, $data));
 });
@@ -103,6 +111,7 @@ Flight::route('PUT /bookings/@id', function($id) {
  *     path="/bookings/{id}",
  *     tags={"Bookings"},
  *     summary="Partially update a booking",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\RequestBody(
  *         @OA\JsonContent(
@@ -119,6 +128,7 @@ Flight::route('PUT /bookings/@id', function($id) {
 
 // PARTIAL update
 Flight::route('PATCH /bookings/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::bookingService()->partial_update($id, $data));
 });
@@ -129,6 +139,7 @@ Flight::route('PATCH /bookings/@id', function($id) {
  *     path="/bookings/{id}",
  *     tags={"Bookings"},
  *     summary="Delete booking by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\Response(response=200, description="Booking deleted")
  * )
@@ -137,5 +148,80 @@ Flight::route('PATCH /bookings/@id', function($id) {
 
 // DELETE booking
 Flight::route('DELETE /bookings/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   Flight::json(Flight::bookingService()->delete($id));
 });
+
+Flight::route('GET /bookings/user/@user_id', function($user_id) {
+    $response = Flight::booking_service()->getByUserId($user_id);
+    
+    if ($response['success']) {
+        Flight::json([
+            'message' => 'Bookings retrieved',
+            'data' => $response['data']
+        ]);
+    } else {
+        Flight::halt(404, $response['error']);
+    }
+});
+/**
+ * @OA\Get(
+ *     path="/bookings/user/{user_id}",
+ *     tags={"Bookings"},
+ *     summary="Get bookings by User ID",
+ *     security={{"BearerAuth": {}}},
+ *     @OA\Parameter(
+ *         name="user_id",
+ *         in="path",
+ *         required=true,
+ *         description="User ID"
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Bookings found"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="No bookings found for the user"
+ *     )
+ * )
+ */
+
+Flight::route('GET /bookings/user/@user_id', function($user_id) {
+    // Get bookings for this user
+    $bookings = Flight::booking_service()->getByUserId($user_id);
+    
+    if ($bookings) {
+        Flight::json([
+            'message' => 'Bookings retrieved',
+            'data' => $bookings
+        ]);
+    } else {
+        Flight::json([
+            'message' => 'No bookings found',
+            'data' => []
+        ]);
+    }
+});
+/**
+ * @OA\Get(
+ *     path="/bookings/user/{user_id}",
+ *     tags={"Bookings"},
+ *     summary="Get bookings by User ID",
+ *     security={{"BearerAuth": {}}},
+ *     @OA\Parameter(
+ *         name="user_id",
+ *         in="path",
+ *         required=true,
+ *         description="User ID"
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Bookings found"
+ *     ),
+ *     @OA\Response(
+ *         response=404,
+ *         description="No bookings found for the user"
+ *     )
+ * )
+ */

@@ -5,6 +5,7 @@
  *     path="/prices",
  *     tags={"Prices"},
  *     summary="Get all prices",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Response(response=200, description="List of prices")
  * )
  */
@@ -12,6 +13,7 @@
 
 // GET all prices
 Flight::route('GET /prices', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::priceService()->getAll());
 });
 
@@ -20,6 +22,7 @@ Flight::route('GET /prices', function() {
  *     path="/prices/{id}",
  *     tags={"Prices"},
  *     summary="Get price by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\Response(response=200, description="Price found")
  * )
@@ -28,6 +31,7 @@ Flight::route('GET /prices', function() {
 
 // GET price by ID
 Flight::route('GET /prices/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::priceService()->getById($id));
 });
 
@@ -36,6 +40,7 @@ Flight::route('GET /prices/@id', function($id) {
  *     path="/prices",
  *     tags={"Prices"},
  *     summary="Create a new price entry",
+ *     security={{"BearerAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -53,6 +58,7 @@ Flight::route('GET /prices/@id', function($id) {
 
 // CREATE price
 Flight::route('POST /prices', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::priceService()->create($data));
 });
@@ -62,6 +68,7 @@ Flight::route('POST /prices', function() {
  *     path="/prices/{id}",
  *     tags={"Prices"},
  *     summary="Update price",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\RequestBody(
  *         required=true,
@@ -79,6 +86,7 @@ Flight::route('POST /prices', function() {
 
 // UPDATE price
 Flight::route('PUT /prices/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::priceService()->update($id, $data));
 });
@@ -88,6 +96,7 @@ Flight::route('PUT /prices/@id', function($id) {
  *     path="/prices/{id}",
  *     tags={"Prices"},
  *     summary="Partially update price",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\RequestBody(@OA\JsonContent()),
  *     @OA\Response(response=200, description="Price updated")
@@ -97,6 +106,7 @@ Flight::route('PUT /prices/@id', function($id) {
 
 // PARTIAL UPDATE
 Flight::route('PATCH /prices/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::priceService()->partial_update($id, $data));
 });
@@ -106,6 +116,7 @@ Flight::route('PATCH /prices/@id', function($id) {
  *     path="/prices/{id}",
  *     tags={"Prices"},
  *     summary="Delete price by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path"),
  *     @OA\Response(response=200, description="Price deleted")
  * )
@@ -114,5 +125,6 @@ Flight::route('PATCH /prices/@id', function($id) {
 
 // DELETE
 Flight::route('DELETE /prices/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   Flight::json(Flight::priceService()->delete($id));
 });

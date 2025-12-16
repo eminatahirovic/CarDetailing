@@ -1,12 +1,79 @@
-<section id="dashboard"><section class="container py-5">
-  <h2 class="section-title h3 mb-3">Dashboard</h2>
-  <div class="row g-4">
-    <div class="col-md-4"><div class="card h-100"><div class="card-body"><h5 class="card-title">Overview</h5><p class="text-muted small">Welcome to your dashboard! <br><br> Here you can view recent activity, track upcoming appointments, and manage your car detailing bookings. <br><br>
-Use the navigation above to explore services, update your profile, or make a new booking. <br> <br>
-We're glad to have you on board — keeping your vehicle spotless has never been easier.</p></div></div></div>
-    <div class="col-md-4"><div class="card h-100"><div class="card-body"><h5 class="card-title">Upcoming</h5><p class="text-muted small">You currently have no upcoming appointments. <br><br>
-When you book a new detailing session, your scheduled date and time will appear here along with service details. <br><br>Book now to secure your next wash or detailing session! <br></p></div></div></div>
-    <div class="col-md-4"><div class="card h-100"><div class="card-body"><h5 class="card-title">Notes</h5><p class="text-muted small">Appointments are processed in real time. <br><br> Once you book a service, you’ll receive confirmation by email or phone. <br><br>
-For urgent detailing requests, please contact our support team during working hours.</p></div></div></div>
+<section class="py-5">
+  <div class="container">
+    <!-- Header with Welcome & Logout -->
+    <div class="row mb-5">
+      <div class="col">
+        <h1 class="h2 mb-0">Welcome, <span id="dashboardUserName">User</span>!</h1>
+        <p class="text-muted mb-0">Here's your dashboard</p>
+      </div>
+      <div class="col-auto d-flex align-items-center">
+        <button class="btn btn-outline-danger" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-3 mb-5">
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Total Bookings</h6>
+            <h2 class="mb-0" id="totalBookings">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Upcoming</h6>
+            <h2 class="mb-0" id="upcomingBookings">0</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h6 class="text-muted mb-2">Completed</h6>
+            <h2 class="mb-0" id="completedBookings">0</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mb-5">
+      <div class="row g-2">
+        <div class="col-12 col-sm-auto">
+          <button class="btn btn-primary btn-lg w-100 w-sm-auto" id="bookNewBtn">+ Book New Service</button>
+        </div>
+        <div class="col-12 col-sm-auto">
+          <a href="#profile" class="btn btn-secondary btn-lg w-100 w-sm-auto">View Profile</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notices Section -->
+    <div class="mb-5">
+      <h3 class="mb-3">📢 Notices</h3>
+      <div id="noticesContainer">
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <strong>Welcome!</strong> Log in to your account to manage your bookings and services.
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bookings Section -->
+    <div class="mb-5">
+      <h3 class="mb-3">📅 Your Bookings</h3>
+      <div id="bookingsContainer">
+        <div class="text-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="text-muted mt-3">Loading your bookings...</p>
+        </div>
+      </div>
+    </div>
+
   </div>
-</section></section>
+</section>

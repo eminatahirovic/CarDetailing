@@ -4,6 +4,7 @@
  *     path="/team",
  *     tags={"Team"},
  *     summary="Get all team members",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Response(response=200, description="List of team members")
  * )
  */
@@ -11,6 +12,7 @@
 
 // GET all team members
 Flight::route('GET /team', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::teamService()->getAll());
 });
 
@@ -19,6 +21,7 @@ Flight::route('GET /team', function() {
  *     path="/team/{id}",
  *     tags={"Team"},
  *     summary="Get team member by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\Response(response=200, description="Team member found")
  * )
@@ -27,6 +30,7 @@ Flight::route('GET /team', function() {
 
 // GET team member by ID
 Flight::route('GET /team/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::teamService()->getById($id));
 });
 
@@ -35,6 +39,7 @@ Flight::route('GET /team/@id', function($id) {
  *     path="/team",
  *     tags={"Team"},
  *     summary="Create new team member",
+ *     security={{"BearerAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -53,6 +58,7 @@ Flight::route('GET /team/@id', function($id) {
 
 // CREATE team member
 Flight::route('POST /team', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::teamService()->create($data));
 });
@@ -62,6 +68,7 @@ Flight::route('POST /team', function() {
  *     path="/team/{id}",
  *     tags={"Team"},
  *     summary="Update team member",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\RequestBody(@OA\JsonContent()),
  *     @OA\Response(response=200, description="Team member updated")
@@ -70,6 +77,7 @@ Flight::route('POST /team', function() {
 
 // UPDATE team member
 Flight::route('PUT /team/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::teamService()->update($id, $data));
 });
@@ -79,6 +87,7 @@ Flight::route('PUT /team/@id', function($id) {
  *     path="/team/{id}",
  *     tags={"Team"},
  *     summary="Partially update a team member",
+ *     security={{"BearerAuth": {}}},
  *     description="Update one or more fields of an existing team member.",
  *     @OA\Parameter(
  *         name="id",
@@ -103,6 +112,7 @@ Flight::route('PUT /team/@id', function($id) {
 
 // PARTIAL update
 Flight::route('PATCH /team/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::teamService()->partial_update($id, $data));
 });
@@ -112,6 +122,7 @@ Flight::route('PATCH /team/@id', function($id) {
  *     path="/team/{id}",
  *     tags={"Team"},
  *     summary="Delete team member",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\Response(response=200, description="Team member deleted")
  * )
@@ -120,5 +131,6 @@ Flight::route('PATCH /team/@id', function($id) {
 
 // DELETE
 Flight::route('DELETE /team/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   Flight::json(Flight::teamService()->delete($id));
 });

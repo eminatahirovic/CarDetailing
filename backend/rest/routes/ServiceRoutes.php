@@ -5,6 +5,7 @@
  *     path="/services",
  *     tags={"Services"},
  *     summary="Get all services",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Response(response=200, description="List of services")
  * )
  */
@@ -12,6 +13,7 @@
 
 // GET all services
 Flight::route('GET /services', function() {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::serviceService()->getAll());
 });
 
@@ -20,6 +22,7 @@ Flight::route('GET /services', function() {
  *     path="/services/{id}",
  *     tags={"Services"},
  *     summary="Get service by ID",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\Response(response=200, description="Service found")
  * )
@@ -28,6 +31,7 @@ Flight::route('GET /services', function() {
 
 // GET service by ID
 Flight::route('GET /services/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
   Flight::json(Flight::serviceService()->getById($id));
 });
 
@@ -36,6 +40,7 @@ Flight::route('GET /services/@id', function($id) {
  *     path="/services",
  *     tags={"Services"},
  *     summary="Create new service",
+ *     security={{"BearerAuth": {}}},
  *     @OA\RequestBody(
  *         required=true,
  *         @OA\JsonContent(
@@ -50,6 +55,7 @@ Flight::route('GET /services/@id', function($id) {
 
 // CREATE service
 Flight::route('POST /services', function() {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::serviceService()->create($data));
 });
@@ -59,6 +65,7 @@ Flight::route('POST /services', function() {
  *     path="/services/{id}",
  *     tags={"Services"},
  *     summary="Update service",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\RequestBody(@OA\JsonContent()),
  *     @OA\Response(response=200, description="Service updated")
@@ -68,6 +75,7 @@ Flight::route('POST /services', function() {
 
 // UPDATE service
 Flight::route('PUT /services/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::serviceService()->update($id, $data));
 });
@@ -77,6 +85,7 @@ Flight::route('PUT /services/@id', function($id) {
  *     path="/services/{id}",
  *     tags={"Services"},
  *     summary="Partially update a service",
+ *     security={{"BearerAuth": {}}},
  *     description="Update one or more fields of an existing service",
  *     @OA\Parameter(
  *         name="id",
@@ -100,6 +109,7 @@ Flight::route('PUT /services/@id', function($id) {
 
 // PARTIAL UPDATE
 Flight::route('PATCH /services/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   $data = Flight::request()->data->getData();
   Flight::json(Flight::serviceService()->partial_update($id, $data));
 });
@@ -109,6 +119,7 @@ Flight::route('PATCH /services/@id', function($id) {
  *     path="/services/{id}",
  *     tags={"Services"},
  *     summary="Delete service",
+ *     security={{"BearerAuth": {}}},
  *     @OA\Parameter(name="id", in="path", required=true),
  *     @OA\Response(response=200, description="Service deleted")
  * )
@@ -117,5 +128,6 @@ Flight::route('PATCH /services/@id', function($id) {
 
 // DELETE service
 Flight::route('DELETE /services/@id', function($id) {
+  Flight::auth_middleware()->authorizeRoles(Roles::ADMIN);
   Flight::json(Flight::serviceService()->delete($id));
 });

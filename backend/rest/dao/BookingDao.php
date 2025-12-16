@@ -48,34 +48,6 @@ class BookingDao extends BaseDao {
         return $stmt->fetchAll();
     }
 
-    // public function getAllBookings() {
-    //     $stmt = $this->connection->query("
-    //         SELECT * FROM " . $this->table . " 
-    //         ORDER BY date DESC, time DESC
-    //     ");
-    //     return $stmt->fetchAll();
-        
-    // }
-
-    // public function updateStatus($booking_id, $status) {
-    //     $stmt = $this->connection->prepare("
-    //         UPDATE " . $this->table . " 
-    //         SET status = :status 
-    //         WHERE booking_id = :booking_id
-    //     ");
-    //     return $stmt->execute([
-    //         ':status' => $status, 
-    //         ':booking_id' => $booking_id
-    //     ]);
-    // }
-
-    // public function deleteBooking($booking_id) {
-    //     $stmt = $this->connection->prepare("
-    //         DELETE FROM " . $this->table . " 
-    //         WHERE booking_id = :booking_id
-    //     ");
-    //     $stmt->bindParam(':booking_id', $booking_id);
-    //     return $stmt->execute();
-    // }
+  
 }
 ?>
