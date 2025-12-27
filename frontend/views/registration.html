@@ -1,22 +1,28 @@
+<div id="registerMessage" class="alert" style="display: none;"></div>
 <form id="registerForm">
   <div class="mb-3">
     <input id="registerName" name="name" type="text" class="form-control" placeholder="First name" required />
+    <div class="invalid-feedback" id="registerNameError"></div>
   </div>
 
   <div class="mb-3">
     <input id="registerLastName" name="lastname" type="text" class="form-control" placeholder="Last name" required />
+    <div class="invalid-feedback" id="registerLastNameError"></div>
   </div>
 
   <div class="mb-3">
     <input id="registerEmail" name="email" type="email" class="form-control" placeholder="Email" required />
+    <div class="invalid-feedback" id="registerEmailError"></div>
   </div>
 
   <div class="mb-3">
     <input id="registerPassword" name="password" type="password" class="form-control" placeholder="Password" required />
+    <div class="invalid-feedback" id="registerPasswordError"></div>
   </div>
 
   <div class="mb-3">
-    <input name="confirm_password" type="password" class="form-control" placeholder="Confirm password" required />
+    <input id="registerConfirmPassword" name="confirm_password" type="password" class="form-control" placeholder="Confirm password" required />
+    <div class="invalid-feedback" id="registerConfirmPasswordError"></div>
   </div>
   
 

@@ -3,14 +3,40 @@
     <div class="col-lg-6">
       <h2 class="section-title h3 mb-3">Contact & Booking</h2>
       <p class="text-muted">Fill out the form and we'll confirm your appointment.</p>
-      <form onsubmit="event.preventDefault(); this.reset(); alert('Thank you! We will contact you shortly.');">
+      <div id="contactMessage" class="alert" style="display: none;"></div>
+      <form id="contactForm">
         <div class="row g-3">
-          <div class="col-md-6"><label class="form-label">Full name</label><input type="text" class="form-control" required></div>
-          <div class="col-md-6"><label class="form-label">Phone</label><input type="tel" class="form-control" required></div>
-          <div class="col-12"><label class="form-label">Email</label><input type="email" class="form-control" required></div>
-          <div class="col-12"><label class="form-label">Service</label><select class="form-select"><option>Basic Wash</option><option>Interior Detail</option><option>Full Detail</option></select></div>
-          <div class="col-12"><label class="form-label">Message</label><textarea class="form-control" rows="4" placeholder="Write down the according time that you would like to have your service done. You will be contacted as soon as possible for the exact schedule. Thank you!"></textarea></div>
-          <div class="col-12"><button class="btn btn-primary">Send</button></div>
+          <div class="col-md-6">
+            <label class="form-label">Full name</label>
+            <input type="text" class="form-control" id="contactName" name="name" required>
+            <div class="invalid-feedback" id="contactNameError"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="contactPhone" name="phone" required>
+            <div class="invalid-feedback" id="contactPhoneError"></div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="contactEmail" name="email" required>
+            <div class="invalid-feedback" id="contactEmailError"></div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Service</label>
+            <select class="form-select" id="contactService" name="service" required>
+              <option value="">Select a service</option>
+              <option>Basic Wash</option>
+              <option>Interior Detail</option>
+              <option>Full Detail</option>
+            </select>
+            <div class="invalid-feedback" id="contactServiceError"></div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Message</label>
+            <textarea class="form-control" id="contactMessageField" name="message" rows="4" placeholder="Write down the according time that you would like to have your service done. You will be contacted as soon as possible for the exact schedule. Thank you!" required></textarea>
+            <div class="invalid-feedback" id="contactMessageFieldError"></div>
+          </div>
+          <div class="col-12"><button class="btn btn-primary" id="contactBtn" type="submit">Send</button></div>
         </div>
       </form>
     </div>

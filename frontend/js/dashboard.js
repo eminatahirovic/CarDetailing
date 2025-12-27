@@ -68,17 +68,7 @@ function setupDashboardListeners() {
 // Load user's bookings
 async function loadBookings(userId) {
     try {
-        const token = getAuthToken();
-        const response = await fetch(`${API_BASE_URL}/bookings/user/${userId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        });
-        
-        console.log('Bookings response status:', response.status);
-        const data = await response.json();
+        const data = await BookingService.getByUserId(userId);
         console.log('Bookings data:', data);
         
         const bookingsContainer = document.getElementById('bookingsContainer');
@@ -87,7 +77,7 @@ async function loadBookings(userId) {
             return;
         }
         
-        if (response.ok && data.data) {
+        if (data && data.data) {
             const bookings = Array.isArray(data.data) ? data.data : [data.data];
             displayBookings(bookings);
             updateBookingStats(bookings);
@@ -104,7 +94,7 @@ async function loadBookings(userId) {
         if (bookingsContainer) {
             bookingsContainer.innerHTML = `
                 <div class="alert alert-danger">
-                    <p>Error loading bookings: ${error.message}</p>
+                    <p>Unable to load bookings right now.</p>
                 </div>
             `;
         }
