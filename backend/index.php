@@ -27,6 +27,7 @@ require_once __DIR__ . '/rest/services/BookingService.php';
 require_once __DIR__ . '/rest/services/AuthService.php';
 require_once __DIR__ . '/middleware/AuthMiddleware.php';
 require_once __DIR__ . '/rest/routes/test.php';
+require_once __DIR__ . '/rest/validation.php';
 
 
 
@@ -41,7 +42,9 @@ Flight::register('authMiddleware', 'AuthMiddleware');
 Flight::route('/*', function() {
    if (
        strpos(Flight::request()->url, '/auth/login') === 0 ||
-       strpos(Flight::request()->url, '/auth/register') === 0
+       strpos(Flight::request()->url, '/auth/register') === 0 ||
+       strpos(Flight::request()->url, '/health') === 0 ||
+       strpos(Flight::request()->url, '/contact') === 0
    ) {
        return true; 
    } else {
@@ -56,6 +59,10 @@ Flight::route('/*', function() {
    }
 });
 
+Flight::route('GET /health', function() {
+    Flight::json(['status' => 'ok']);
+});
+
 
 require_once __DIR__ . '/rest/routes/AuthRoutes.php';
 require_once __DIR__ . '/rest/routes/UserRoutes.php';
@@ -63,6 +70,7 @@ require_once __DIR__ . '/rest/routes/TeamRoutes.php';
 require_once __DIR__ . '/rest/routes/ServiceRoutes.php';
 require_once __DIR__ . '/rest/routes/PriceRoutes.php';
 require_once __DIR__ . '/rest/routes/BookingRoutes.php';
+require_once __DIR__ . '/rest/routes/ContactRoutes.php';
 
 
 Flight::start();

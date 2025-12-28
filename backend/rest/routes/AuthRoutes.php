@@ -22,14 +22,41 @@ use Firebase\JWT\Key;
 Flight::route('POST /auth/register', function () {
 
     $data = Flight::request()->data->getData();
-
+    if (!is_array($data) || empty($data)) {
+        $data = json_decode(Flight::request()->getBody(), true);
+    }
     if (!is_array($data)) {
-        Flight::json([
-            'success' => false,
-            'error' => 'Invalid request payload'
-        ], 400);
+        validation_error('Invalid request payload');
         return;
     }
+
+    $name = sanitize_string($data['name'] ?? '');
+    $lastname = sanitize_string($data['lastname'] ?? '');
+    $email = sanitize_string($data['email'] ?? '');
+    $password = $data['password'] ?? '';
+
+    $fields = [];
+    if ($name === '') $fields['name'] = 'First name is required.';
+    if ($lastname === '') $fields['lastname'] = 'Last name is required.';
+    if ($email === '') {
+        $fields['email'] = 'Email is required.';
+    } elseif (!is_valid_email($email)) {
+        $fields['email'] = 'Invalid email address.';
+    }
+    if ($password === '') {
+        $fields['password'] = 'Password is required.';
+    } elseif (!is_valid_password($password)) {
+        $fields['password'] = 'Password must be 8+ chars with letters and numbers.';
+    }
+
+    if (!empty($fields)) {
+        validation_error('Please correct the highlighted fields.', $fields);
+        return;
+    }
+
+    $data['name'] = $name;
+    $data['lastname'] = $lastname;
+    $data['email'] = $email;
 
     $response = Flight::authService()->register($data);
 
@@ -40,6 +67,12 @@ Flight::route('POST /auth/register', function () {
             'data' => $response['data']
         ], 201);
     } else {
+        if ($response['error'] === 'Email already registered.') {
+            validation_error('Please correct the highlighted fields.', [
+                'email' => 'Email is already registered.'
+            ]);
+            return;
+        }
         Flight::json([
             'success' => false,
             'error' => $response['error']
@@ -65,13 +98,34 @@ Flight::route('POST /auth/register', function () {
  * )
  */
 Flight::route('POST /auth/login', function() {
-    $data = json_decode(Flight::request()->getBody(), true);
-    
+    $data = Flight::request()->data->getData();
+    if (!is_array($data) || empty($data)) {
+        $data = json_decode(Flight::request()->getBody(), true);
+    }
     if (!is_array($data)) {
-        Flight::json(['success' => false, 'error' => 'Invalid request payload'], 400);
+        validation_error('Invalid request payload');
         return;
     }
 
+    $email = sanitize_string($data['email'] ?? '');
+    $password = $data['password'] ?? '';
+
+    $fields = [];
+    if ($email === '') {
+        $fields['email'] = 'Email is required.';
+    } elseif (!is_valid_email($email)) {
+        $fields['email'] = 'Invalid email address.';
+    }
+    if ($password === '') {
+        $fields['password'] = 'Password is required.';
+    }
+    if (!empty($fields)) {
+        validation_error('Please correct the highlighted fields.', $fields);
+        return;
+    }
+
+    $data['email'] = $email;
+    
     $response = Flight::authService()->login($data);
     
     if ($response['success']) {
@@ -85,6 +139,24 @@ Flight::route('POST /auth/login', function() {
             'success' => false,
             'error' => $response['error']
         ], 401);
+    }
+});
+
+Flight::route('GET /auth/me', function() {
+    $token = Flight::request()->getHeader("Authorization");
+    $token = str_replace('Bearer ', '', $token);
+    if (!$token) {
+        Flight::halt(401, 'Missing authentication header');
+        return;
+    }
+    try {
+        $decoded = JWT::decode($token, new Key(Config::JWT_SECRET(), 'HS256'));
+        Flight::json([
+            'success' => true,
+            'data' => $decoded->user
+        ]);
+    } catch (Exception $e) {
+        Flight::halt(401, 'Invalid token');
     }
 });
 ?>
